@@ -46,3 +46,4 @@ pip-delete-this-directory.txt
 db.sqlite3
 db.sqlite3-journal
 psql_configuration.py
+db.json
