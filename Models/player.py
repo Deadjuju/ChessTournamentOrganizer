@@ -42,7 +42,6 @@ class Player(Person):
     @property
     def player_data(self) -> dict:
         data = self.__dict__
-        data["genre"] = self.genre.name
         return data
 
     def __str__(self) -> str:
@@ -58,3 +57,4 @@ if __name__ == "__main__":
 
     print(player.full_name)
     print(player.player_data)
+    print(player.__repr__())
