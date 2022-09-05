@@ -1,0 +1,2 @@
+NUMBER_OF_TURNS: int = 4
+NUMBERS_OF_PLAYERS: int = 8
