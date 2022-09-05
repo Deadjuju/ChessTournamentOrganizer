@@ -3,7 +3,7 @@ Model for tournaments
 """
 from enum import Enum
 
-from settings.project_config import NUMBER_OF_TURNS
+from Settings.project_config import NUMBER_OF_TURNS
 
 
 class TimeControl(Enum):
@@ -72,7 +72,7 @@ if __name__ == '__main__':
     start_date = "01/10/2022"
     end_date = "01/10/2022"
     description = "Tournois d'octobre de Chaville"
-    time_control = TimeControl("bullet")
+    time_control = TimeControl.BULLET.value
 
     tournament = Tournament(name, place, start_date, end_date, description, time_control)
 

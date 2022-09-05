@@ -14,11 +14,11 @@ class Person:
     def __init__(self,
                  first_name: str,
                  last_name: str,
-                 genre: Gender,
+                 gender: Gender,
                  date_of_birth: str) -> None:
         self.first_name = first_name
         self.last_name = last_name
-        self.genre = genre
+        self.gender = gender
         self.date_of_birth = date_of_birth
 
     @property
@@ -31,9 +31,9 @@ class Player(Person):
     def __init__(self,
                  first_name: str,
                  last_name: str,
-                 genre: Gender,
+                 gender: Gender,
                  date_of_birth: str) -> None:
-        super().__init__(first_name, last_name, genre, date_of_birth)
+        super().__init__(first_name, last_name, gender, date_of_birth)
         self.ranking: int = 0
         self.tournament_score: float = 0
         self.players_already_faced: list = []
@@ -53,7 +53,7 @@ class Player(Person):
 
 if __name__ == "__main__":
 
-    player = Player("Bob", "Razowski", Gender("M"), "04/04/2000")
+    player = Player("Bob", "Razowski", Gender.MALE.value, "04/04/2000")
 
     print(player.full_name)
     print(player.player_data)
