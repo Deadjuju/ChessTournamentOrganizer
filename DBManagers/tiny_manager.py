@@ -1,8 +1,11 @@
+from typing import Optional
+
 from tinydb.database import TinyDB as TinyDBType
 from tinydb.table import Table as TableType
+from tinydb.table import Document as DocumentType
 from tinydb.queries import QueryInstance
 
-from BDManagers.db_manager import DBManager
+from DBManagers.db_manager import DBManager
 
 
 class TinyManager(DBManager):
@@ -29,7 +32,7 @@ class TinyManager(DBManager):
         return generated_query
 
     @classmethod
-    def get_instances_id(cls, db_table: TableType, values: list[tuple[str, str]]) -> list[int]:
+    def get_objects_id(cls, db_table: TableType, values: list[tuple[str, str]]) -> list[int]:
         """
             values: (list[tuple[str, str]]): [("field_name", value), ]
         """
@@ -37,6 +40,15 @@ class TinyManager(DBManager):
         query = cls._generate_query(values)
         instances = db_table.search(query)
         return [instance.doc_id for instance in instances]
+
+    @classmethod
+    def get_object(cls, db_table: TableType, values: list[tuple[str, str]]) -> Optional[DocumentType]:
+        query = cls._generate_query(values)
+        return db_table.get(query)
+
+    @classmethod
+    def is_object_exist(cls, db_table: TableType, values: list[tuple[str, str]]) -> bool:
+        return bool(cls.get_object(db_table, values))
 
 
 if __name__ == '__main__':
@@ -67,9 +79,12 @@ if __name__ == '__main__':
     #     TinyManager.save(PLAYERS_TABLE, player_to_save.player_data)
 
     search_values = [("first_name", "Bob"), ("last_name", "Razowski")]
-    instances = TinyManager.get_instances_id(PLAYERS_TABLE, search_values)
+    instances = TinyManager.get_objects_id(PLAYERS_TABLE, search_values)
     print(instances)
 
+    print(TinyManager.get_object(PLAYERS_TABLE, search_values))
+    print(TinyManager.is_object_exist(PLAYERS_TABLE, search_values))
+
     search_values = [("gender", "F")]
-    instances = TinyManager.get_instances_id(PLAYERS_TABLE, search_values)
+    instances = TinyManager.get_objects_id(PLAYERS_TABLE, search_values)
     print(instances)
