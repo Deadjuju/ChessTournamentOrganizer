@@ -32,12 +32,18 @@ class Player(Person):
                  first_name: str,
                  last_name: str,
                  gender: Gender,
-                 date_of_birth: str) -> None:
+                 date_of_birth: str,
+                 ranking: int = 0,
+                 tournament_score: float = 0,
+                 players_already_faced=None,
+                 is_already_in_a_tournament: bool = False) -> None:
         super().__init__(first_name, last_name, gender, date_of_birth)
-        self.ranking: int = 0
-        self.tournament_score: float = 0
-        self.players_already_faced: list = []
-        self.is_already_in_a_tournament: bool = False
+        if players_already_faced is None:
+            players_already_faced = []
+        self.ranking = ranking
+        self.tournament_score = tournament_score,
+        self.players_already_faced = [] if players_already_faced is None else players_already_faced
+        self.is_already_in_a_tournament = is_already_in_a_tournament
 
     @property
     def player_data(self) -> dict:
