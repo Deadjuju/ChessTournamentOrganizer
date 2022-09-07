@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 
 from tinydb.database import TinyDB as TinyDBType
 from tinydb.table import Table as TableType
@@ -6,6 +6,9 @@ from tinydb.table import Document as DocumentType
 from tinydb.queries import QueryInstance
 
 from DBManagers.db_manager import DBManager
+
+
+AttributeValue = Union[str, int, bool]
 
 
 class TinyManager(DBManager):
@@ -28,7 +31,7 @@ class TinyManager(DBManager):
                     return False
             return True
 
-        generated_query = QueryInstance(test=test_func, hashval=(custom_query, ))
+        generated_query = QueryInstance(test=test_func, hashval=(custom_query,))
         return generated_query
 
     @classmethod
@@ -42,7 +45,9 @@ class TinyManager(DBManager):
         return [instance.doc_id for instance in instances]
 
     @classmethod
-    def get_object(cls, db_table: TableType, values: list[tuple[str, str]]) -> Optional[DocumentType]:
+    def get_object(
+            cls, db_table: TableType, values: list[tuple[str, str]]
+    ) -> Optional[DocumentType]:
         query = cls._generate_query(values)
         return db_table.get(query)
 
@@ -50,9 +55,17 @@ class TinyManager(DBManager):
     def is_object_exist(cls, db_table: TableType, values: list[tuple[str, str]]) -> bool:
         return bool(cls.get_object(db_table, values))
 
+    @classmethod
+    def update_attribute(
+            cls, db_table: TableType, attribute_name: str, new_attribute_value: AttributeValue, instance_id: int
+    ) -> None:
+        """update an attribute in database"""
+
+        db_table.update({attribute_name: new_attribute_value},
+                        doc_ids=[instance_id])
+
 
 if __name__ == '__main__':
-
     from Models.player import Player, Gender
     from Settings.db_config import DB, PLAYERS_TABLE
 

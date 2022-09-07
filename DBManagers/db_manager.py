@@ -22,3 +22,10 @@ class DBManager(ABC):
     @abstractmethod
     def is_object_exist(cls, db_table, values) -> bool:
         """check if object exist"""
+
+    @classmethod
+    def update_attribute(
+            cls, db_table, attribute_name, new_attribute_value, instance_id
+    ) -> None:
+        """update an attribute in database"""
+
