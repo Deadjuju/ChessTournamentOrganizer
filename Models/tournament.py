@@ -21,7 +21,10 @@ class Tournament:
                  start_date: str,
                  end_date: str,
                  description: str,
-                 time_control: TimeControl) -> None:
+                 time_control: TimeControl,
+                 current_turn: int = 1,
+                 turns_id=None,
+                 players_id=None) -> None:
 
         self.name = name
         self.place = place
@@ -31,15 +34,27 @@ class Tournament:
         self.time_control = time_control
 
         self.number_of_turns: int = NUMBER_OF_TURNS
-        self.turns_id: list[int] = []
-        self.current_turn: int = 1
-        self.players_id: list[int] = []
+
+        self.current_turn = current_turn
+        self.turns_id: list[int] = [] if turns_id is None else turns_id
+        self.players_id: list[int] = [] if players_id is None else players_id
 
     @property
-    def is_over(self) -> bool:
-        if self.current_turn == self.number_of_turns:
-            return True
-        return False
+    def current_turn(self) -> int:
+        return self._current_turn
+
+    @current_turn.setter
+    def current_turn(self, value: int) -> None:
+        """
+        create and toggle value of is_over attribute
+        which indicates if tournament is over or not
+        """
+
+        if value >= self.number_of_turns:
+            self.is_over = True
+        else:
+            self.is_over = False
+        self._current_turn = value
 
     @property
     def date(self) -> str:
@@ -60,11 +75,12 @@ class Tournament:
         return f"{self.tournament_data}"
 
     def next_turn(self) -> None:
+        """one turn increment"""
+
         self.current_turn += 1
 
 
 if __name__ == '__main__':
-
     from pprint import pprint
 
     name = "Tournoi de Chaville"
@@ -79,3 +95,18 @@ if __name__ == '__main__':
     print(tournament)
     print(tournament.__repr__())
     pprint(tournament.tournament_data)
+
+    print(f"Finish? {tournament.is_over}")
+    print(f"Turn: {tournament.current_turn}")
+    tournament.next_turn()
+    print(f"Turn: {tournament.current_turn}")
+    print(f"Finish? {tournament.is_over}")
+    tournament.next_turn()
+    print(f"Turn: {tournament.current_turn}")
+    print(f"Finish? {tournament.is_over}")
+    tournament.next_turn()
+    print(f"Turn: {tournament.current_turn}")
+    print(f"Finish? {tournament.is_over}")
+    tournament.next_turn()
+    print(f"Turn: {tournament.current_turn}")
+    print(f"Finish? {tournament.is_over}")
