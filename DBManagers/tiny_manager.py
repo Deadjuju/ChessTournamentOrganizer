@@ -18,6 +18,14 @@ class TinyManager(DBManager):
         table.insert(data)
 
     @classmethod
+    def get_all_objects_from_table(cls, table: TableType) -> list:
+        return table.all()
+
+    @classmethod
+    def count_objects_in_db(cls, table: TableType) -> int:
+        return len(table)
+
+    @classmethod
     def _generate_query(cls, values: list[tuple[str, str]]) -> QueryInstance:
 
         custom_query = frozenset(
@@ -59,10 +67,20 @@ class TinyManager(DBManager):
     def update_attribute(
             cls, db_table: TableType, attribute_name: str, new_attribute_value: AttributeValue, instance_id: int
     ) -> None:
-        """update an attribute in database"""
 
         db_table.update({attribute_name: new_attribute_value},
                         doc_ids=[instance_id])
+
+    @classmethod
+    def update_attribute_many(
+            cls, db_table: TableType,
+            attribute_name: str,
+            new_attribute_value: AttributeValue,
+            instances_id_list: list
+    ) -> None:
+
+        db_table.update({attribute_name: new_attribute_value},
+                        doc_ids=instances_id_list)
 
 
 if __name__ == '__main__':
@@ -101,3 +119,5 @@ if __name__ == '__main__':
     search_values = [("gender", "F")]
     instances = TinyManager.get_objects_id(PLAYERS_TABLE, search_values)
     print(instances)
+
+    print(TinyManager.count_objects_in_db(PLAYERS_TABLE))
